@@ -1,57 +1,40 @@
-import hogs from "../porkers_data";
-
-// console.log(hogs)
-
-function Tile({name, image, hogs}) {
-console.log(hogs)
-    
-const renderTiles = hogs.map(hog => {
-    
-    <div>
-        <header>{hog.name}</header> 
-        <img src={hog.image} alt={hog.name}/>
-    </div>
-    }
-)
+import { useState } from "react"
+import HogDetail from "./HogDetail"
+//render each tile
 
 
-return (
-    <div>
-        {renderTiles}
-    </div>
-    );
+// create a tile with name and image
+const NameAndImg = ({name, image})=>{
+    return (
+        <div>
+            <h3>{name}</h3>
+            <img src = {image} alt = {name}/>
+        </div>
+    )
 }
 
-export default Tile;
 
-// function ProjectItem({ name, about, technologies }) {
+/////////////  render one single tile /////////////
+const Tile = ({hog}) => {
+    // use state to update the showing info
+    // set initial state as false when the details are not showing on the tile
+    const [showDetails, setShowDetails] = useState (false)
 
-//     const eachTechnology = technologies.map ( technology =>(
-//       <span key = {technology}> {technology}</span>
-//     ))
-  
-//     return (
-//       <div className="project-item">
-//         <h3>{name}</h3>
-//         <p>{about}</p>
-//         <div className="technologies">{ eachTechnology }</div>
-//       </div>
-//     );
-//   }
+    const toggleDetails =()=>{
+        // setfunction is not same as the variable --- not using " ==", cuz it's not mutating the original state
+           setShowDetails (!showDetails)
+    }
 
+    return (
+        // add a click event to allow the information change on the tile
+        <div onClick = {toggleDetails} className="image pigTile ui four wide column">
+           {
+            showDetails ? // if the state is true , show detail, else show the name & image
+            <HogDetail hog={hog} /> :
+            <NameAndImg name = {hog.name} image = {hog.image}/>
+           }
+        </div>
+    )
+}
 
-
-// function ProjectList({ projects }) {
-//     console.log(projects);
-  
-//     const RenderProjects = projects.map( (projectObj) =>(
-//       <ProjectItem key = {projectObj.id} name= {projectObj.name} about = {projectObj.about} technologies = {projectObj.technologies} />
-//     ))
-  
-//     return (
-//       <div id="projects">
-//         <h2>My Projects</h2>
-//         <div id="project-list">{ RenderProjects }</div>
-//       </div>
-//     );
-//   }
+export default Tile
